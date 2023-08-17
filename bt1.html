@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giphy Search</title>
+</head>
+<body>
+  <h1>Giphy Search</h1>
+  <input type="text" id="searchInput">
+  <button onclick="searchGiphy()">Search</button>
+  <div id="gifContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function searchGiphy() {
+  const searchInput = document.getElementById('searchInput').value;
+  const apiKey = '2Y0N7zoteMy7F75CuNj8sLWMw5AGckdw';
+
+  const url = `http://api.giphy.com/v1/gifs/search?q=${searchInput}&api_key=${apiKey}`;
+
+  axios.get(url)
+    .then(response => {
+      const gifData = response.data.data;
+      displayGifs(gifData);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+function displayGifs(gifData) {
+  const gifContainer = document.getElementById('gifContainer');
+  gifContainer.innerHTML = '';
+
+  gifData.forEach(gif => {
+    const gifImage = document.createElement('img');
+    gifImage.src = gif.images.fixed_height.url;
+    gifContainer.appendChild(gifImage);
+  });
+}
+  </script>
+</body>
+</html>
